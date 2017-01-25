@@ -691,6 +691,10 @@ awful.rules.rules = {
 		     maximized_vertical = false,
 		     maximized_horizontal = false,
                      buttons = clientbuttons } },
+    -- Add titlebars to normal clients and dialogs
+    { rule_any = {type = { "normal", "dialog" }
+      }, properties = { titlebars_enabled = true }
+    },
     { rule = { class = "bioshock.i386" },
       properties = { fullscreen = true,screen = 1, tag = "7" } },
     { rule = { class = "UE4-Linux-Test" },
