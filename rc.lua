@@ -113,8 +113,8 @@ myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
    { "restart", awesome.restart },
-   { "reboot" , function () awful.util.spawn_with_shell("sudo reboot") end},
-   { "shutdown", function () awful.util.spawn_with_shell("sudo shutdown -h now") end},
+   { "reboot" , function () awful.spawn.with_shell("sudo reboot") end},
+   { "shutdown", function () awful.spawn.with_shell("sudo shutdown -h now") end},
    { "quit", function() awesome.quit() end}
 }
 
@@ -474,11 +474,11 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
-    awful.key({},"XF86TouchpadToggle", function () awful.util.spawn_with_shell("synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')") end),
-    awful.key({},"XF86KbdBrightnessDown", function () awful.util.spawn_with_shell("~/bin/kbd_backlight down") end),
-    awful.key({},"XF86KbdBrightnessUp", function () awful.util.spawn_with_shell("~/bin/kbd_backlight up") end),
+    awful.key({},"XF86TouchpadToggle", function () awful.spawn.with_shell("synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')") end),
+    awful.key({},"XF86KbdBrightnessDown", function () awful.spawn.with_shell("~/bin/kbd_backlight down") end),
+    awful.key({},"XF86KbdBrightnessUp", function () awful.spawn.with_shell("~/bin/kbd_backlight up") end),
     awful.key({},"XF86Display",xrandr),
-    awful.key({modkey, }, "Delete", function () awful.util.spawn_with_shell("xscreensaver-command -lock") end),
+    awful.key({modkey, }, "Delete", function () awful.spawn.with_shell("xscreensaver-command -lock") end),
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
@@ -692,18 +692,6 @@ client.connect_signal("manage", function (c, startup)
         end
     end)
 
-    if not startup then
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
-        -- awful.client.setslave(c)
-
-        -- Put windows in a smart way, only if they does not set an initial position.
-        if not c.size_hints.user_position and not c.size_hints.program_position then
-            awful.placement.no_overlap(c)
-            awful.placement.no_offscreen(c)
-        end
-    end
-
     local titlebars_enabled = false
     if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
         -- buttons for the titlebar
@@ -763,8 +751,8 @@ end
 -- }}}
 
 -- necessary for nm-applet to work (permissions)
- awful.util.spawn_with_shell("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
+ awful.spawn.with_shell("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
 -- set pidgin window master width
 screen[1].tags[2].master_width_factor = 0.15
-awful.util.spawn_with_shell(helper_dir .. "nasa_bg.sh")
-awful.util.spawn_with_shell(helper_dir .. "autostart.sh")
+awful.spawn.with_shell(helper_dir .. "nasa_bg.sh")
+awful.spawn.with_shell(helper_dir .. "autostart.sh")
