@@ -161,11 +161,11 @@ local tasklist_buttons = awful.util.table.join(
                                               else
                                                   -- Without this, the following
                                                   -- :isvisible() makes no sense
-						  c.minimized = false
-						   if not c:isvisible() and c.first_tag then
-						       c.first_tag:view_only()
-                                                   end
-						   -- This will also un-minimize
+                                                  c.minimized = false
+                                                  if not c:isvisible() and c.first_tag then
+                                                      c.first_tag:view_only()
+                                                  end
+                                                  -- This will also un-minimize
                                                   -- the client, if needed
                                                   client.focus = c
                                                   c:raise()
@@ -622,6 +622,7 @@ root.keys(globalkeys)
 -- }}}
 
 -- {{{ Rules
+-- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
