@@ -18,6 +18,9 @@ require('freedesktop.utils')
 freedesktop.utils.icon_theme = 'gnome' -- look inside /usr/share/icons/, default: nil (don't use icon theme)
 require('freedesktop.menu')
 
+-- my libs
+local my_widgets = require("conf/widgets")
+
 menubar.cache_entries = false
 menubar.app_folders = { "~/.apps/" }
 menubar.show_categories = true   -- Change to false if you want only programs to appear in the menu
@@ -184,62 +187,21 @@ local tasklist_buttons = awful.util.table.join(
                                               awful.client.focus.byidx(-1)
                                               if client.focus then client.focus:raise() end
                                           end))
-
--- volwidget = widget({type = "textbox"})
-volwidget = wibox.widget.textbox()
-vicious.register(volwidget, vicious.widgets.volume, " $1%", 1, "Master -c0")
-
- volwidget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () awful.spawn("amixer -c0 -q set Master toggle", false) end),
-    awful.button({ }, 3, function () awful.spawn("xterm -e alsamixer -c0", true) end),
-    awful.button({ }, 4, function () awful.spawn("amixer -c0 -q set Master 5%+", false) end),
-    awful.button({ }, 5, function () awful.spawn("amixer -c0 -q set Master 5%-", false) end)
-))
- 
 -- Initialize widget
 cpuwidget = wibox.widget.textbox()
--- widget({ type = "textbox" })
--- Register widget
-vicious.register(cpuwidget, vicious.widgets.cpu, "$1%")
--- Initialize widget
+volwidget = wibox.widget.textbox()
 memwidget=blingbling.line_graph.new()
-memwidget:set_height(18)
-memwidget:set_width(100)
-memwidget:set_font_size(8)
-memwidget:set_background_color("#00000090")
-memwidget:set_show_text(true)
-memwidget:set_label("Mem load: $percent %")
--- Register widget
-vicious.register(memwidget, vicious.widgets.mem, '$1', 2)
 -- netwidget
 my_net=blingbling.net({interface = "eth0", show_text = true})
-my_net:set_height(18)
---activate popup with ip informations on the net widget Blingbling Example 4.png
-my_net:set_ippopup()
-my_net:set_v_margin(3)
-my_net:set_show_text(true)
 -- Pacman Widget
 pacwidget = wibox.widget.textbox()
-
 pacwidget_t = awful.tooltip({ objects = { pacwidget},})
 
-vicious.register(pacwidget, vicious.widgets.pkg,
-                function(widget,args)
-                    local io = { popen = io.popen }
-                    local s = io.popen("pacman -Qu")
-                    local str = ''
-
-                    for line in s:lines() do
-                        str = str .. line .. "\n"
-                    end
-                    pacwidget_t:set_text(str)
-                    s:close()
-                    return "UPDATES: " .. args[1]
-                end, 1800, "Arch")
-
-                --'1800' means check every 30 minutes
-
-
+my_widgets.volwidget(volwidget)
+my_widgets.cpuwidget(cpuwidget)
+my_widgets.memwidget(memwidget)
+my_widgets.netwidget(my_net)
+my_widgets.pacwidget({ w = pacwidget, t = pacwidget_t })
 
 local function set_wallpaper(s)
     -- Wallpaper
