@@ -688,12 +688,26 @@ awful.rules.rules = {
       properties = { opacity = 0.95 , size_hints_honor = false } },
 --     { rule = { class = "Firefox" }, properties = {opacity = 0.85}}, 
 --       { rule = { class = "Amarok" }, properties = {opacity = 0.75 }},
-     { rule = { class = "Pidgin"}, properties = {screen = 1, tag = "2"}},
-     { rule = { }, properties = { }, callback = function(c)
+    { rule = { class = "Pidgin"}, properties = {screen = 1, tag = "2"}},
+    { rule = { class = "Rocket.Chat+"}, properties = {screen = 3, tag = "1"}},
+    { rule = { }, properties = { }, callback = function(c)
       if awful.tag.getidx() == 2 then
        	 awful.client.setslave(c)
       end
-      end }
+    end },
+    -- IDEA fixes
+    { rule = { class = "jetbrains-.*",
+	       instance = "sun-awt-X11-XWindowPeer",
+	       name = "win.*"},
+      properties = {
+	 floating = true,
+	 focus = true,
+	 focusable = false,
+	 ontop = true,
+	 placement = awful.placement.restore,
+	 buttons = {}
+      }
+    }
 }
 -- }}}
 
